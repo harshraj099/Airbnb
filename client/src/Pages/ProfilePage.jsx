@@ -4,6 +4,7 @@ import { UserContext } from "../UserContext";
 import { Navigate, useParams} from "react-router-dom";
 import AccountNav from "../AccountNav";
 import PlacesPage from "./PlacesPage";
+import Header from "../Header";
 
 export default function ProfilePage(){
     const [redirect,setRedirect]=useState(null);
@@ -35,6 +36,7 @@ export default function ProfilePage(){
     return(
         
         <div>
+            <Header></Header>
             <AccountNav/>
            {subpage==='profile' && (
             <div className=" text-center max-w-lg mx-auto">

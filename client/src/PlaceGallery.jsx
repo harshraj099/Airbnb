@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-export default function placeGallery({place}){
+export default function PlaceGallery({place}){
     const [showAllPhotos,setShowAllPhotos] = useState(false);
 
     if(showAllPhotos){          
@@ -17,7 +17,7 @@ export default function placeGallery({place}){
                     </button>
                 </div>
                 {place?.photos?.length >0 && place.photos.map(photo =>(
-                    <div>
+                    <div key={photo}>
                         <img src={"http://localhost:4000/uploads/"+photo} alt="" />
                     </div>
                 ))}

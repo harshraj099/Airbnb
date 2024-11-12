@@ -1,28 +1,28 @@
 import axios from "axios";
 import { useState } from "react";
 
-export default function PhotosUploader({addedPhotos,onChange}){
+export default function PhotosUploader({addedPhotos, onChange}){
     const [photoLink,setPhotoLink]=useState('');
     
     async function addPhotoByLink(ev) {
-        ev.preventdefault();
-        // await axios.post('/upload-by-link',{ link:photoLink});
-        const {data:filename}=await axios.post('/upload-by-link',{ link:photoLink});
-        onChange(prev=>{
-            return [...prev,filename];
-        });
-        // setAddedPhoto(prev=>{
-        //     return [...prev,filename];
-        // });
-        setPhotoLink('');
-      
+        ev.preventDefault();
+        try {
+            const { data: { filename } } = await axios.post('/upload-by-link', { link: photoLink });
+            onChange(prev => [...prev, filename]);
+            console.log("")
+            setPhotoLink('');
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            alert('Failed to upload image. Please check the link and try again.');
+        }
     }
+    
     function uploadPhoto(ev){
         const files=ev.target.files;
         const data=new FormData();
         // data.set('photos[]',files);
         for(let i=0;i<files.length;i++){
-            data.append('photo',files[i]);
+            data.append('photos',files[i]);
         }
         axios.post('/upload',data,{
             headers:{'Content-Type':'multipart/form-data'}
@@ -34,11 +34,11 @@ export default function PhotosUploader({addedPhotos,onChange}){
         })
     }
     function removePhoto(ev,filename){
-        ev.preventdefault();
+        ev.preventDefault();
         onChange([...addedPhotos.filter(photo => photo !==filename)]);
     }
     function selectAsMainPhoto(ev,filename){
-        ev.preventdefault();
+        ev.preventDefault();
         onChange([filename,...addedPhotos.filter(photo => photo !==filename)]);
     }
 
